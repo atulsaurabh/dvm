@@ -29,8 +29,6 @@ public class VersionController {
     {
         String v = new FileUtil().findConfig().get(CustomProperty.CURRENT_VERSION);
         int currentVersion = Integer.parseInt(v);
-
-
         return currentVersion;
     }
 }
