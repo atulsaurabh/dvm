@@ -16,10 +16,9 @@ import java.util.logging.Logger;
 
 public class FileUtil
 {
-    public  Map<String,String> findConfig()
+    public  Map<Long,String> findConfig()
     {
-        String [] propertyName = getPropertyName();
-        Map<String,String> properties = new HashMap<>();
+        Map<Long,String> properties = new HashMap<>();
         try
         {
             String path = this.getClass().getResource(CustomProperty.CONFIG_DIR).getPath();
@@ -29,13 +28,10 @@ public class FileUtil
 
             Scanner scanner=new Scanner(new FileInputStream(configFile));
             String version = "";
-
-            int i=0;
             while (scanner.hasNextLine()) {
                 String pname = scanner.nextLine();
                 String[] split = pname.split(":");
-                properties.put(propertyName[i], split[1]);
-                i++;
+                properties.put(Long.parseLong(split[0]), split[1]);
             }
             /* Write map properties to dvmserver.cfg file*/
             //writePropertyNameToFile(properties);
@@ -50,18 +46,10 @@ public class FileUtil
         }
         return properties;
     }
-
-
-    private  String [] getPropertyName()
-    {
-        return new String[]{CustomProperty.CURRENT_FILE,CustomProperty.CURRENT_VERSION};
-    }
-
-
-    public void writePropertiesToFile(Map<String,String> map)
+    public void writePropertiesToFile(Map<Long,String> map)
     {
         try {
-            String path = this.getClass().getResource(CustomProperty.CONFIG_DIR + CustomProperty.CURRENT_FILE).toURI().getPath();
+            String path = this.getClass().getResource(CustomProperty.CONFIG_DIR+"/dvmserver.cfg").getPath();
             File file=new File(path);
             PrintWriter writer=new PrintWriter(new FileOutputStream(file));
             map.forEach((key,value)->{
@@ -72,10 +60,7 @@ public class FileUtil
 
 
         }
-        catch (URISyntaxException syn)
-        {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Unable To Configure MySQL Home");
-        } catch (FileNotFoundException e) {
+         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 

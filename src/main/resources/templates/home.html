@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload The Database Update</title>
+</head>
+<body>
+   <div>
+       <div>
+           <b style="color: red" th:text="${message}"></b>
+           <hr/>
+       </div>
+       <div align="center">
+           <form action="uploadmysqldump" method="post" enctype="multipart/form-data">
+               <table>
+                   <tr>
+                       <td><b>Updated SQL File</b></td>
+                       <td><input type="file" name="mysqlupdate"/></td>
+                   </tr>
+                   <tr>
+                       <td colspan="2" align="center">
+                           <button type="submit">Upload</button>
+                       </td>
+                   </tr>
+               </table>
+           </form>
+       </div>
+       <div><hr/></div>
+   </div>
+</body>
+</html>

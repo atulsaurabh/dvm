@@ -12,23 +12,28 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 @RestController
 @RequestMapping(PublicURI.VERSION_CONTROLLER_URI)
 public class VersionController {
 
     @GetMapping
-    public int sendCurrentVersion()
+    public long sendCurrentVersion()
     {
            return findCurrentVersion();
     }
-
-
-    private int findCurrentVersion()
+    private long findCurrentVersion()
     {
-        String v = new FileUtil().findConfig().get(CustomProperty.CURRENT_VERSION);
-        int currentVersion = Integer.parseInt(v);
-        return currentVersion;
+        Map<Long,String> map = new FileUtil().findConfig();
+        Set<Long> keys = map.keySet();
+        long max=keys.stream().max((o1, o2) -> {
+            int x = o1.intValue() - o2.intValue();
+            return x;
+        }).get();
+
+        return max;
     }
 }
